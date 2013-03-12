@@ -8,6 +8,11 @@ if (Meteor.isClient) {
 		return Teams.find(); //{}, {sort: {name: 1}});
 	};
 
+	Template.team.score = function() {
+		console.log(this);
+		return this.players.reduce(function(a, b) { return a + b.score; }, 0);
+	};
+
 	Template.player.selected_name = function () {
 		return Session.equals("selected_player", this._id);
 		var player = Teams.findOne(Session.get("selected_player"));

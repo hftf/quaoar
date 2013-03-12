@@ -11,22 +11,30 @@ body {
 }
 
 #outer {
-    width: 600px;
+    width: 400px;
     margin: 0 auto;    
 }
 
 .player {
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 0;
 }
 
-.player .name {
+.team {
+    width: 400px;
+}
+.team h1 {
+    font-weight: bold;
+    border-bottom: 1px solid #777;
+}
+
+.player .name, .team .name {
     display: inline-block;
     width: 300px;
     font-size: 1.75em;
 }
 
-.player .score {
+.player .score, .team .score {
     display: inline-block;
     width: 100px;
     text-align: right;

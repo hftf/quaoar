@@ -29,7 +29,10 @@
 
 <template name="team">
   <div class="team">
-    <h1>{{name}}</h1>
+    <h1>
+      <span class="name">{{name}}</span><!--
+      --><span class="score">{{score}}</span>
+    </h1>
     {{#each players}}
       {{> player}}
     {{/each}}
@@ -38,8 +41,8 @@
 
 <template name="player">
   <div class="player {{selected}}">
-    <span class="name">{{name}}</span>
-    <span class="score">{{score}}</span>
+    <span class="name">{{name}}</span><!--
+    --><span class="score">{{score}}</span>
     {{#if selected_name}}
     <div class="">
       <input type="button" class="power" data-points="15" value="+15" />
