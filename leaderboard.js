@@ -20,11 +20,21 @@ if (Meteor.isClient) {
 
 	Template.leaderboard.events({
 		'click input': function (event) {
-			var points = +event.target.dataset.points;
-			Teams.update(
-				{ 'players._id' : Session.get("selected_player") },
-				{ $inc: { 'players.$.score': points } }
-			);
+			var trg = event.srcElement || event.target;
+			//var points = +trg.dataset.points;
+			var points = +trg.getAttribute('data-points');
+
+			// Assuming that Session.get("selected_player") === this._id because the buttons only show up when player is selected
+			// https://github.com/meteor/meteor/blob/master/examples/parties/model.js#L123
+			var team = Teams.findOne({ 'players._id': this._id });
+			var players = _.pluck(team.players, '_id');
+			for (var p = 0; p < players.length; p ++)
+				if (players[p].equals(this._id))
+					break;
+			var modifier = { $inc: {} }
+			modifier.$inc['players.' + p + '.score'] = points;
+
+			Teams.update({ 'players._id': this._id }, modifier);
 		}
 	});
 
