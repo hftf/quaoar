@@ -2,6 +2,7 @@
 // it is backed by a MongoDB collection named "players".
 
 Teams = new Meteor.Collection("teams");
+Players = new Meteor.Collection("players");
 
 function ndashify(n) {
 	return (n < 0) ? '−' + Math.abs(n) : n; // that's U+2212 MINUS SIGN
@@ -13,16 +14,21 @@ if (Meteor.isClient) {
 	};
 
 	Template.team.score = function() {
-		return ndashify(this.players.reduce(function(a, b) { return a + b.score; }, 0));
+		var players = Players.find({ 'team_id': this._id });
+		var players_array = players.map(function (v) { return v; }); // because Cursor doesn't have reduce, only map
+		return ndashify(players_array.reduce(function(a, b) { return a + b.score; }, 0));
 	};
+	Template.team.players = function() {
+		return Players.find({ 'team_id': this._id });
+	}
 
 	Template.player.score = function() {
 		return ndashify(this.score);
 	}
 	Template.player.selected_name = function () {
 		return Session.equals("selected_player", this._id);
-		var player = Teams.findOne(Session.get("selected_player"));
-		return player && player.name;
+		//var player = Players.findOne(Session.get("selected_player"));
+		//return player && player.name;
 	};
 	Template.player.selected = function () {
 		return Session.equals("selected_player", this._id) ? "selected" : '';
@@ -36,7 +42,11 @@ if (Meteor.isClient) {
 
 			// Assuming that Session.get("selected_player") === this._id because the buttons only show up when player is selected
 			// https://github.com/meteor/meteor/blob/master/examples/parties/model.js#L123
-			var team = Teams.findOne({ 'players._id': this._id });
+
+			Players.update(this._id, { $inc: { 'score': points } });
+			return;
+
+			var team = Players.findOne({ 'players._id': this._id });
 			var players = _.pluck(team.players, '_id');
 			for (var p = 0; p < players.length; p ++)
 				if (players[p].equals(this._id))
@@ -61,16 +71,20 @@ if (Meteor.isServer) {
 		if (Teams.find().count() === 0) {
 
 			var teams = [
-					{ name: 'UMD A', players: [ { name: 'Chris Ray' }, { name: 'Brian McPeak' }, { name: 'Arun Chonai' }, { name: 'Chris Manners' } ] },
-					{ name: 'UMD B', players: [ { name: 'Isaac Hirsch' }, { name: 'Gary Weiser' }, { name: 'Ophir Lifshitz' }, { name: 'Dan Puma' } ] },
+				{ name: 'UMD A', players: [ { name: 'Chris Ray' }, { name: 'Brian McPeak' }, { name: 'Arun Chonai' }, { name: 'Chris Manners' } ] },
+				{ name: 'UMD B', players: [ { name: 'Isaac Hirsch' }, { name: 'Gary Weiser' }, { name: 'Ophir Lifshitz' }, { name: 'Dan Puma' } ] },
 			];
 			
 			for (var i = 0; i < teams.length; i ++) {
-				for (var j = 0; j < teams[i].players.length; j ++) {
-					teams[i].players[j]._id = new Meteor.Collection.ObjectID();
-					teams[i].players[j].score = 0;
+				var team_players = teams[i].players;
+				delete teams[i].players;
+				var team_id = Teams.insert(teams[i]);
+
+				for (var j = 0; j < team_players.length; j ++) {
+					team_players[j].team_id = team_id;
+					team_players[j].score = 0;
+					Players.insert(team_players[j]);
 				}
-				Teams.insert(teams[i]);
 			}
 		}
 	});
