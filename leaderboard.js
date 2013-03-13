@@ -3,22 +3,27 @@
 
 Teams = new Meteor.Collection("teams");
 
+function ndashify(n) {
+	return (n < 0) ? '−' + Math.abs(n) : n; // that's U+2212 MINUS SIGN
+}
+
 if (Meteor.isClient) {
 	Template.leaderboard.teams = function () {
 		return Teams.find(); //{}, {sort: {name: 1}});
 	};
 
 	Template.team.score = function() {
-		console.log(this);
-		return this.players.reduce(function(a, b) { return a + b.score; }, 0);
+		return ndashify(this.players.reduce(function(a, b) { return a + b.score; }, 0));
 	};
 
+	Template.player.score = function() {
+		return ndashify(this.score);
+	}
 	Template.player.selected_name = function () {
 		return Session.equals("selected_player", this._id);
 		var player = Teams.findOne(Session.get("selected_player"));
 		return player && player.name;
 	};
-
 	Template.player.selected = function () {
 		return Session.equals("selected_player", this._id) ? "selected" : '';
 	};
