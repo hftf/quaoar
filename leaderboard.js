@@ -7,12 +7,15 @@ function ndashify(n) {
 
 if (Meteor.isClient) {
 	Template.leaderboard.teams = function () {
-		return Teams.find(); //{}, {sort: {name: 1}});
+		var game = Games.findOne();
+		if (!game) // We might not have synced yet...
+			return;
+		return Teams.find({ _id: { $in: game.teams } }); //{}, {sort: {name: 1}});
 	};
 
 	Template.team.score = function() {
 		var players = Players.find({ 'team_id': this._id });
-		var players_array = players.map(function (v) { return v; }); // because Cursor doesn't have reduce, only map
+		var players_array = players.fetch(); // because Cursor doesn't have reduce, only fetch
 		return ndashify(players_array.reduce(function(a, b) { return a + b.score; }, 0));
 	};
 	Template.team.players = function() {
