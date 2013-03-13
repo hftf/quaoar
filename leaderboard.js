@@ -27,8 +27,6 @@ if (Meteor.isClient) {
 	}
 	Template.player.selected_name = function () {
 		return Session.equals("selected_player", this._id);
-		//var player = Players.findOne(Session.get("selected_player"));
-		//return player && player.name;
 	};
 	Template.player.selected = function () {
 		return Session.equals("selected_player", this._id) ? "selected" : '';
@@ -41,20 +39,7 @@ if (Meteor.isClient) {
 			var points = +trg.getAttribute('data-points');
 
 			// Assuming that Session.get("selected_player") === this._id because the buttons only show up when player is selected
-			// https://github.com/meteor/meteor/blob/master/examples/parties/model.js#L123
-
 			Players.update(this._id, { $inc: { 'score': points } });
-			return;
-
-			var team = Players.findOne({ 'players._id': this._id });
-			var players = _.pluck(team.players, '_id');
-			for (var p = 0; p < players.length; p ++)
-				if (players[p].equals(this._id))
-					break;
-			var modifier = { $inc: {} }
-			modifier.$inc['players.' + p + '.score'] = points;
-
-			Teams.update({ 'players._id': this._id }, modifier);
 		}
 	});
 
