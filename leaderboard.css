@@ -1,70 +1,60 @@
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 200;
-    margin: 50px 0;
-    padding: 0;
+    font-family: 'Cronos Pro';
+    /*
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+    */
+
+    font-size: 18px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+}
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    font-family: inherit;
+    font-size: 18px;
 }
 
-#outer {
-    width: 400px;
-    margin: 0 auto;    
+
+header {
+    font-family: 'Warnock Pro';
+}
+.swash {
+	-webkit-font-feature-settings: 'swsh';
+	-moz-font-feature-settings: 'swsh';
+	-ms-font-feature-settings: 'swsh';
+	font-feature-settings: 'swsh';
 }
 
 .player {
     cursor: pointer;
-    padding: 5px 0;
+    padding: 10px;
+    font-size: 24px;
 }
 
-.team {
-    width: 400px;
-}
-.team h1 {
+.team h2 {
     font-weight: bold;
-    border-bottom: 1px solid #777;
 }
 
 .player .name, .team .name {
     display: inline-block;
-    width: 300px;
-    font-size: 1.75em;
 }
 
 .player .score, .team .score {
     display: inline-block;
-    width: 100px;
-    text-align: right;
-    font-size: 2em;
+    float: right;
     font-weight: bold;
     color: #777;
+    font-size: 1.2em;
 }
 
 .player.selected {
-    background-color: yellow;
+    outline: 2px solid #fe1;
 }
-
 .player.selected .score {
     color: black;
-}
-
-.details, .none {
-    font-weight: bold;
-    font-size: 2em;
-    border-style: dashed none none none;
-    border-color: #ccc;
-    border-width: 4px;
-    margin: 50px 10px;
-    padding: 10px 0px;
-}
-
-.none {
-    color: #777;
-}
-
-.inc {
-  cursor: pointer;
 }
