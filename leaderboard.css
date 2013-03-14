@@ -30,6 +30,22 @@ header {
 	-ms-font-feature-settings: 'swsh';
 	font-feature-settings: 'swsh';
 }
+nav ul li {
+	display: inline;
+    line-height: 50px; /* borrowed from h1 */
+    font-size: 22px;
+    font-variant: small-caps;
+    -webkit-font-feature-settings: 'smcp';
+}
+nav ul li:not(last-of-type) {
+    margin-right: 20px;
+}
+nav ul li a {
+    text-decoration: none;
+}
+nav ul li a:hover {
+    text-decoration: underline;
+}
 
 .player {
     cursor: pointer;
