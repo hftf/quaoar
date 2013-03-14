@@ -3,36 +3,35 @@
 </head>
 
 <body>
-  <div id="outer">
+  <div class="container">
+    <header>
+      <h1 class="remove-bottom" style="margin-top: 40px;">
+        <em><span class="swash">Q</span>uaoar</em>
+      </h1>
+      <hr />
+    </header>
     {{> leaderboard}}
   </div>
 </body>
 
 <template name="leaderboard">
-  <div class="leaderboard">
+  <div class="teams">
+    <div class="one columns">
+      <br />
+    </div>
     {{#each teams}}
       {{> team}}
     {{/each}}
   </div>
-
-  {{#if selected_name}}
-  <div class="details">
-    <div class="name">{{selected_name}}</div>
-    <input type="button" class="inc" value="Give 5 points" />
-  </div>
-  {{/if}}
-
-  {{#unless selected_name}}
-  <div class="none">Click a player to select</div>
-  {{/unless}}
 </template>
 
 <template name="team">
-  <div class="team">
-    <h1>
+  <div class="team seven columns">
+    <h2>
       <span class="name">{{name}}</span><!--
       --><span class="score">{{score}}</span>
-    </h1>
+    </h2>
+    <hr class="half-bottom" />
     {{#each players}}
       {{> player}}
     {{/each}}
@@ -45,9 +44,9 @@
     --><span class="score">{{score}}</span>
     {{#if selected_name}}
     <div class="">
-      <input type="button" class="power" data-points="15" value="+15" />
-      <input type="button" class="ten"   data-points="10" value="+10" />
-      <input type="button" class="neg"   data-points="-5" value="&ndash;5" />
+      <input type="button" class="remove-bottom power" data-points="15" value="+15" />
+      <input type="button" class="remove-bottom ten"   data-points="10" value="+10" />
+      <input type="button" class="remove-bottom neg"   data-points="-5" value="&ndash;5" />
     </div>
     {{/if}}
   </div>
