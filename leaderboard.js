@@ -48,4 +48,8 @@ if (Meteor.isClient) {
 			Session.set("selected_player", this._id);
 		}
 	});
+
+	$(document).on('keydown', function(event) {
+		
+	});
 }

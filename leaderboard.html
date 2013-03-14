@@ -6,6 +6,7 @@
   <div class="container">
     <header>
       <h1 class="remove-bottom" style="margin-top: 40px;">
+        <!--<span style="-webkit-font-feature-settings: 'ornm';"><!-ajklopstu->k</span>-->
         <em><span class="swash">Q</span>uaoar</em>
       </h1>
       <hr />
@@ -43,9 +44,9 @@
     <span class="name">{{name}}</span><!--
     --><span class="score">{{score}}</span>
     {{#if selected_name}}
-    <div class="">
-      <input type="button" class="remove-bottom power" data-points="15" value="+15" />
-      <input type="button" class="remove-bottom ten"   data-points="10" value="+10" />
+    <div style="margin-top: 10px;">
+      <input type="button" class="remove-bottom power" data-points="15" value="15" />
+      <input type="button" class="remove-bottom ten"   data-points="10" value="10" />
       <input type="button" class="remove-bottom neg"   data-points="-5" value="&ndash;5" />
     </div>
     {{/if}}

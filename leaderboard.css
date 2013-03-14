@@ -13,6 +13,7 @@ body {
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
+    text-rendering: optimizeLegibility;
 }
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
     font-family: inherit;
@@ -53,7 +54,10 @@ header {
 }
 
 .player.selected {
-    outline: 2px solid #fe1;
+    outline: 1px solid #fe1;
+    -webkit-box-shadow: inset 0 0 10px #fe1;
+    -moz-box-shadow: inset 0 0 10px #fe1;
+    box-shadow: inset 0 0 10px #fe1;
 }
 .player.selected .score {
     color: black;
