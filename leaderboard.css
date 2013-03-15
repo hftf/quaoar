@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5, h6 {
 
 header {
     font-family: 'Warnock Pro';
+    margin-top: 20px;
 }
 .swash {
 	-webkit-font-feature-settings: 'swsh';
@@ -30,6 +31,7 @@ header {
 	-ms-font-feature-settings: 'swsh';
 	font-feature-settings: 'swsh';
 }
+nav ul { margin: 0; }
 nav ul li {
 	display: inline;
     line-height: 50px; /* borrowed from h1 */
@@ -82,14 +84,14 @@ nav ul li a:hover {
 .text {
     line-height: 1.4;
     text-align: justify;
-    font-family: 'Warnock Pro';
+    font-family: 'Cronos Pro';
+    font-size: 18px;
 }
 .text p {
-    color: #000;
+    color: #181818;
 }
-.text b {
-    font-weight: bold;
-}
+.text b { font-weight: bold; }
+.text i { font-style: italic; }
 .text .answer-label {
     /*font-variant: small-caps;*/
     text-transform: lowercase;
