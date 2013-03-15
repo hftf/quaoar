@@ -38,12 +38,11 @@
       <p>{{{this_question.question}}}</p>
       <p>{{> answer_label}} {{{this_question.answer}}}</p>
     {{else}}
-      <p>{{{this_question.prompt}}}
-      {{#each this_question.parts}}<br />
-        <span style="color: #999;">[{{value}}]</span> {{{question}}}<br />
-        {{> answer_label}} {{{answer}}}
+      <p>{{{this_question.prompt}}}</p>
+      {{#each this_question.parts}}
+        <p><span style="color: #aaa;">[{{value}}]</span> {{{question}}}<br />
+        {{> answer_label}} {{{answer}}}</p>
       {{/each}}
-    </p>
     {{/if}}
   </div>
 </template>
