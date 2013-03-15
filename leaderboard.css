@@ -78,3 +78,23 @@ nav ul li a:hover {
 .player.selected .score {
     color: black;
 }
+
+.text {
+    line-height: 1.4;
+    text-align: justify;
+    font-family: 'Warnock Pro';
+}
+.text p {
+    color: #000;
+}
+.text b {
+    font-weight: bold;
+}
+.text .answer-label {
+    /*font-variant: small-caps;*/
+    text-transform: lowercase;
+    -webkit-font-feature-settings: 'smcp';
+    -moz-font-feature-settings: 'smcp';
+    -ms-font-feature-settings: 'smcp';
+    font-feature-settings: 'smcp';
+}

@@ -18,13 +18,32 @@
       </nav>
       <hr />
     </header>
+    {{> reader}}
     {{> leaderboard}}
   </div>
 </body>
 
+<template name="reader">
+  <div class="reader row">
+    <div class="four columns">
+      <h2>
+        <input type="button" class="remove-bottom prev" data-inc="-1" value="←" />
+        {{question_index}} of {{questions.length}}
+        <input type="button" class="remove-bottom next" data-inc="1" value="→" />
+      </h2>
+    </div>
+    <div class="twelve columns">
+      <div class="text">
+        <p>{{{question.question}}}</p>
+        <p><span class="answer-label">Answer:</span> {{{question.answer}}}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
 <template name="leaderboard">
-  <div class="teams">
-    <div class="one columns">
+  <div class="teams row">
+    <div class="four columns">
       <br />
     </div>
     {{#each teams}}
@@ -34,7 +53,7 @@
 </template>
 
 <template name="team">
-  <div class="team seven columns">
+  <div class="team six columns">
     <h2>
       <span class="name">{{name}}</span><!--
       --><span class="score">{{score}}</span>
