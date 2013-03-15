@@ -51,12 +51,13 @@ nav ul li a:hover {
 
 .player {
     cursor: pointer;
-    padding: 10px;
-    font-size: 24px;
+    padding: 8px 10px;
+    font-size: 18px;
 }
 
 .team h2 {
     font-weight: bold;
+    padding: 0 10px;
 }
 
 .player .name, .team .name {
@@ -86,6 +87,7 @@ nav ul li a:hover {
     text-align: justify;
     font-family: 'Cronos Pro';
     font-size: 18px;
+    height: 275px;
 }
 .text p {
     color: #181818;
