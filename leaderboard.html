@@ -28,18 +28,34 @@
     <div class="four columns">
       <h2>
         <input type="button" class="remove-bottom prev" data-inc="-1" value="←" />
-        {{question_index}} of {{questions.length}}
+        {{type_index}} of {{type_length}}
         <input type="button" class="remove-bottom next" data-inc="1" value="→" />
       </h2>
     </div>
     <div class="twelve columns">
-      <div class="text">
-        <p>{{{question.question}}}</p>
-        <p><span class="answer-label">Answer:</span> {{{question.answer}}}</p>
-      </div>
+      {{> question}}
     </div>
     <hr class="remove-bottom" />
   </div>
+</template>
+
+<template name="question">
+  <div class="text">
+    {{#if isType "tossups"}}
+      <p>{{{this_question.question}}}</p>
+      <p>{{> answer_label}} {{{this_question.answer}}}</p>
+    {{else}}
+      <p>{{{this_question.prompt}}}
+      {{#each this_question.parts}}<br />
+        <span style="color: #999;">[{{value}}]</span> {{{question}}}<br />
+        {{> answer_label}} {{{answer}}}
+      {{/each}}
+    </p>
+    {{/if}}
+  </div>
+</template>
+<template name="answer_label">
+  <span class="answer-label">Answer:</span>
 </template>
 
 <template name="leaderboard">
