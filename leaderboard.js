@@ -24,13 +24,18 @@ if (Meteor.isClient) {
 		var round = Rounds.findOne(game.round_id);
 		return packet = Packets.findOne(round.packet_id);
 	};
-	Template.reader.type_index = function() {
+
+	Template.nav.type = function(type) {
+		if (!Session.get('locator'))
+			return;
+		return Session.get('locator')[0].type;
+	};
+	Template.nav.type_index = function() {
 		var l = Session.get('locator');
-		console.log(l);
 		if (!l) return;
 		return l[0].index + 1;
 	};
-	Template.reader.type_length = function () {
+	Template.nav.type_length = function () {
 		if (!Template.reader.packet())
 			return;
 		var l = Session.get('locator');
@@ -79,9 +84,8 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.reader.events({
+	Template.nav.events({
 		'click input': function (event) {
-			console.log(Session.get('locator'));
 			var trg = event.srcElement || event.target;
 			var inc = +trg.getAttribute('data-inc');
 
