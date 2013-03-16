@@ -68,7 +68,18 @@
       <input type="button" class="remove-bottom next" data-inc="1" value="›" />
       <input type="button" class="remove-bottom skip" data-inc="1" data-skip="1" value="»" />
     </h3>
+    <hr class="half-bottom" />
+    <h4>Latest events</h4>
+    <ul>
+    {{#each Events}}
+      {{> event}}
+    {{/each}}
+    </ul>
   </div>
+</template>
+
+<template name="event">
+  <li><small>{{player}} {{pointed}} <span class="text">{{{question}}}</span></small></li>
 </template>
 
 <template name="team">

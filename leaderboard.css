@@ -86,21 +86,22 @@ nav ul li a:hover {
 }
 
 .text {
-    line-height: 1.4;
-    text-align: justify;
+    /*line-height: 1.4;
     font-family: 'Cronos Pro';
-    font-size: 18px;
+    font-size: 18px;*/
+    
     height: 335px;
     overflow-y: auto;
 
+    text-align: justify;
     font-family: 'Warnock Pro';
-    font-size: 16px;
     font-weight: 400;
     line-height: 1.6;
 }
 .text p {
     color: #181818;
     margin-bottom: 0.5em;
+    font-size: 16px;
 }
 .text b { font-weight: bold; }
 .text i { font-style: italic; }

@@ -10,8 +10,11 @@ if (Meteor.isClient) {
 		Meteor.autorun(function () {
 			if (!Session.get('game')) {
 				var game = Games.findOne();
-				if (game)
+				if (game) {
+					if (!game.events)
+						game.events = [];
 					Session.set('game', game);
+				}
 			}
 		});
 		Session.setDefault('locator', [{ type: 'tossups', index: 0 }]);
@@ -48,6 +51,34 @@ if (Meteor.isClient) {
 		var l = Session.get('locator');
 		return Template.reader.packet()[l[0].type].length;
 	};
+	Template.nav.Events = function() {
+		if (!Session.get('game'))
+			return;
+		return Session.get('game').events.slice(0,2);
+	};
+
+	Template.event.player = function() {
+		if (!Players.findOne(this.player_id))
+			return;
+		return Players.findOne(this.player_id).name;
+	};
+	Template.event.pointed = function() {
+		switch (this.inc) {
+			case -5: return 'negged'; break;
+		//	case 10: return 'tenned'; break;
+			case 15: return 'powered'; break;
+			default: return ndashify(this.inc) + '’d';
+		}
+	}
+	Template.event.question = function() {
+		if (!Template.reader.packet())
+			return;
+		var l = this.location;
+		var answer = Template.reader.packet()[l.type][l.index].answer;
+		if (answer.indexOf(' [') !== -1)
+			return answer.substring(0, answer.indexOf(' ['));
+		return answer;
+	}
 
 	Template.question.this_question = function() {
 		if (!(Template.reader.packet()))
@@ -80,14 +111,25 @@ if (Meteor.isClient) {
 		return Session.equals('selected_player', this._id) ? 'selected' : '';
 	};
 
-	Template.leaderboard.events({
+	Template.player.events({
 		'click input': function (event) {
 			var trg = event.srcElement || event.target;
 			//var points = +trg.dataset.points;
-			var points = +trg.getAttribute('data-points');
+			var inc = +trg.getAttribute('data-points');
 
 			// Assuming that Session.get("selected_player") === this._id because the buttons only show up when player is selected
-			Players.update(this._id, { $inc: { 'score': points } });
+			Players.update(this._id, { $inc: { 'score': inc } });
+
+			var g = Session.get('game');
+			var l = Session.get('locator');
+			g.events.unshift({ player_id: this._id, inc: inc, location: l[0] });
+			Session.set('game', g);
+		},
+		'click': function () {
+			if (Session.get('locator')[0].type !== 'tossups')
+				return;
+
+			Session.set('selected_player', this._id);
 		}
 	});
 
@@ -120,6 +162,8 @@ if (Meteor.isClient) {
 				}
 				l.unshift(new_loc);
 			}
+			if (l[0].type === 'bonuses')
+				Session.set('selected_player', null);
 
 				
 
@@ -142,12 +186,6 @@ if (Meteor.isClient) {
 			// l.cur = (l.cur === 'bonuses') ? 'tossups' : 'bonuses';
 			// console.log('->',l.cur, l[l.cur]+1)
 			Session.set('locator', l);
-		}
-	});
-
-	Template.player.events({
-		'click': function () {
-			Session.set('selected_player', this._id);
 		}
 	});
 
