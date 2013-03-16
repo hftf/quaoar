@@ -7,21 +7,28 @@ function ndashify(n) {
 
 if (Meteor.isClient) {
 	Meteor.startup(function() {
+		Meteor.autorun(function () {
+			if (!Session.get('game')) {
+				var game = Games.findOne();
+				if (game)
+					Session.set('game', game);
+			}
+		});
 		Session.setDefault('locator', [{ type: 'tossups', index: 0 }]);
 	});
 
 	Template.leaderboard.teams = function () {
-		var game = Games.findOne();
-		if (!game) // We might not have synced yet...
+		if (!Session.get('game')) // We might not have synced yet...
 			return;
-		return Teams.find({ _id: { $in: game.teams } }); //{}, {sort: {name: 1}});
+		return Teams.find({ _id: { $in: Session.get('game').teams } }); //{}, {sort: {name: 1}});
 	};
 
 	Template.reader.packet = function() {
-		var game = Games.findOne();
-		if (!game)
+		if (!Session.get('game'))
 			return;
-		var round = Rounds.findOne(game.round_id);
+		var round = Rounds.findOne(Session.get('game').round_id);
+		if (!round)
+			return;
 		return packet = Packets.findOne(round.packet_id);
 	};
 
@@ -67,10 +74,10 @@ if (Meteor.isClient) {
 		return ndashify(this.score);
 	};
 	Template.player.selected_name = function () {
-		return Session.equals("selected_player", this._id);
+		return Session.equals('selected_player', this._id);
 	};
 	Template.player.selected = function () {
-		return Session.equals("selected_player", this._id) ? "selected" : '';
+		return Session.equals('selected_player', this._id) ? 'selected' : '';
 	};
 
 	Template.leaderboard.events({
@@ -95,9 +102,9 @@ if (Meteor.isClient) {
 					l.shift();
 			}
 			else if (inc === 1) {
-				var next_different_than_cur = true;
+				var next_same_as_cur = trg.getAttribute('data-skip') === null;
 				for (var m = 0; m < l.length; m ++)
-					if ((l[m].type === l[0].type) == !next_different_than_cur)
+					if ((l[m].type === l[0].type) == !next_same_as_cur)
 						break;
 
 				// If no previous questions of opposite type, use the first
@@ -140,7 +147,7 @@ if (Meteor.isClient) {
 
 	Template.player.events({
 		'click': function () {
-			Session.set("selected_player", this._id);
+			Session.set('selected_player', this._id);
 		}
 	});
 

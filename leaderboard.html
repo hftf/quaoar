@@ -61,12 +61,13 @@
 
 <template name="nav">
   <div class="four columns">
-    <h2 style="text-align: center;">
+    <h3 style="text-align: center;">
       <span style="font-variant: small-caps; -webkit-font-feature-settings: 'smcp';">{{type}}</span><br />
       <input type="button" class="remove-bottom prev" data-inc="-1" value="←" />
       {{type_index}} of {{type_length}}
-      <input type="button" class="remove-bottom next" data-inc="1" value="→" />
-    </h2>
+      <input type="button" class="remove-bottom next" data-inc="1" value="›" />
+      <input type="button" class="remove-bottom skip" data-inc="1" data-skip="1" value="»" />
+    </h3>
   </div>
 </template>
 
