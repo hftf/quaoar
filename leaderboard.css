@@ -113,3 +113,19 @@ nav ul li a:hover {
     -ms-font-feature-settings: 'smcp';
     font-feature-settings: 'smcp';
 }
+.text .button, .text button, .text input[type="submit"], .text input[type="reset"], .text input[type="button"] {
+    font-family: 'Cronos Pro';
+    padding: 1px 10px;
+}
+
+.packetbar {
+    width: 100%;
+}
+.packetbar td, .packetbar th {
+    text-align: center;
+    color: #999;
+    border: 1px solid #eee;
+}
+.packetbar .selected {
+    color: black;
+}

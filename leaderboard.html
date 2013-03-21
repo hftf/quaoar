@@ -24,12 +24,30 @@
 </body>
 
 <template name="reader">
+  <div class="row">
+    <div class="sixteen columns">
+      <h3>Round {{packet.round}} — Packet {{packet.filename}}</h3>
+      <table class="packetbar">
+        <tr>
+        {{#each packet.tossups}}
+          <td class="{{selected}}">T</td>
+        {{/each}}
+        </tr>
+        <tr>
+        {{#each packet.bonuses}}
+          <td class="{{selected}}">B</td>
+        {{/each}}
+        </tr>
+      </table>
+    </div>
+  </div>
+  <hr class="half-bottom" />
   <div class="reader row">
     <div class="sixteen columns">
       {{> question}}
     </div>
-    <hr class="remove-bottom" />
   </div>
+  <hr class="remove-bottom" />
 </template>
 
 <template name="question">
@@ -41,7 +59,10 @@
       <p>{{{this_question.prompt}}}</p>
       {{#each this_question.parts}}
         <p><span style="color: #aaa;">[{{value}}]</span> {{{question}}}<br />
-        {{> answer_label}} {{{answer}}}</p>
+        {{> answer_label}} {{{answer}}}
+        <input type="button" class="remove-bottom ten"   data-points="10" value="10" />
+        <input type="button" class="remove-bottom zero"  data-points="0" value="0" />
+      </p>
       {{/each}}
     {{/if}}
   </div>

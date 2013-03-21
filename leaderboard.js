@@ -32,7 +32,12 @@ if (Meteor.isClient) {
 		var round = Rounds.findOne(Session.get('game').round_id);
 		if (!round)
 			return;
-		return packet = Packets.findOne(round.packet_id);
+		return Packets.findOne(round.packet_id);
+	};
+	Template.reader.selected = function() {
+		var l = Session.get('locator');
+		var selected_question = Template.reader.packet()[l[0].type][l[0].index];
+		return _.isEqual(selected_question, this) ? 'selected' : '';
 	};
 
 	Template.nav.type = function(type) {
@@ -133,6 +138,7 @@ if (Meteor.isClient) {
 		}
 	});
 
+	//✅✓✔✕✖✗✘✩❌❎★☆
 	Template.nav.events({
 		'click input': function (event) {
 			var trg = event.srcElement || event.target;
