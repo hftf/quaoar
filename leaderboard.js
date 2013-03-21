@@ -24,6 +24,10 @@ if (Meteor.isClient) {
 		return dateObj.toTimeString().substring(0,5);
 	});
 
+	Meteor.autosubscribe(function() {
+		Meteor.subscribe("allUserData");
+	});
+
 	Template.leaderboard.teams = function () {
 		if (!Session.get('game')) // We might not have synced yet...
 			return;
@@ -41,7 +45,30 @@ if (Meteor.isClient) {
 	Template.reader.selected = function() {
 		var l = Session.get('locator');
 		var selected_question = Template.reader.packet()[l[0].type][l[0].index];
+		var self = Object.create(this);
+		delete self.index;
 		return _.isEqual(selected_question, this) ? 'selected' : '';
+	};
+	Template.reader.types = [ 'tossups', 'bonuses' ];
+	Template.reader.type_questions = function(type, packet) {
+		if (!packet)
+			return;
+		return packet[type].map(function (v, i) { v.index = (i + 1); if (v.index < 10) v.index = '0' + v.index; return v; });
+	};
+	Template.reader.list = function(p) {
+		var types = ['tossups', 'bonuses'];
+		var self = this;
+		delete self.index;
+
+		outside:
+		for (var type = 0; type < types.length; type ++)
+			for (var index = 0; index < p[types[type]].length; index ++)
+				if (_.isEqual(p[types[type]][index], self))
+					break outside;
+		
+		var list = Meteor.users.find({ locator: { type: types[type], index: index } });
+		if (list.count())
+			return list;
 	};
 
 	Template.nav.type = function(type) {
@@ -164,8 +191,8 @@ if (Meteor.isClient) {
 						break;
 
 				// If no previous questions of opposite type, use the first
-				var new_loc;
 				var num_questions = Template.reader.packet()[l[0].type].length;
+				var new_loc;
 				if (m >= l.length)
 					new_loc = { type: l[0].type === 'bonuses' ? 'tossups' : 'bonuses', index: 0 };
 				else {
@@ -200,6 +227,7 @@ if (Meteor.isClient) {
 			// l.cur = (l.cur === 'bonuses') ? 'tossups' : 'bonuses';
 			// console.log('->',l.cur, l[l.cur]+1)
 			Session.set('locator', l);
+			Meteor.users.update({ '_id': Meteor.userId() }, { $set: { 'locator': l[0] } });
 		}
 	});
 

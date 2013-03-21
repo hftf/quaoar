@@ -21,6 +21,30 @@ Games = new Meteor.Collection("games");
 Events = new Meteor.Collection("events");
 
 
+Players.allow({
+	update: function (userId, event, fields, modifier) {
+		return userId;
+	}
+});
+Events.allow({
+	insert: function (userId, event) {
+		return userId;
+		//return Moderators.findOne({ 'game_id': event.game_id, 'user_id': userId });
+	}
+});
+if (Meteor.isServer) {
+	Meteor.publish('allUserData', function () {
+		return Meteor.users.find({}, { fields: { 'locator': true, 'emails': true } });
+	});
+}
+Meteor.users.allow({
+	update: function (userId, user, fields, modifier) {
+		return true;
+		return userId === user._id;
+	}
+});
+
+
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
 	Meteor.startup(function () {

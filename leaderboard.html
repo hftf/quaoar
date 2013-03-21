@@ -9,13 +9,16 @@
         <!--<span style="-webkit-font-feature-settings: 'ornm';"><!-ajklopstu->k</span>-->
         <em><span class="swash">Q</span>uaoar</em>
       </h1>
-      <nav class="twelve columns">
+      <nav class="eight columns">
         <ul>
           <li><a href="#">link</a></li>
           <li><a href="#">link</a></li>
           <li><a href="#">link</a></li>
         </ul>
       </nav>
+      <div class="four columns">
+        {{loginButtons}}
+      </div>
       <hr class="half-bottom" />
     </header>
     {{> reader}}
@@ -28,16 +31,22 @@
     <div class="sixteen columns">
       <h3>Round {{packet.round}} — Packet {{packet.filename}}</h3>
       <table class="packetbar">
-        <tr>
-        {{#each packet.tossups}}
-          <td class="{{selected}}">T</td>
+      {{#each types}}
+        <tr class="{{this}}">
+          <th>{{this}}</th>
+        {{#each type_questions this packet}}
+          <td class="{{selected}}">{{index}}
+          {{#if list packet}}
+            <ul class="question_userlist">
+            {{#each list packet}}
+              <li>{{emails.0.address}}</li>
+            {{/each}}
+            </ul>
+          {{/if}}
+          </td>
         {{/each}}
         </tr>
-        <tr>
-        {{#each packet.bonuses}}
-          <td class="{{selected}}">B</td>
-        {{/each}}
-        </tr>
+      {{/each}}
       </table>
     </div>
   </div>
