@@ -11,13 +11,16 @@ if (Meteor.isClient) {
 			if (!Session.get('game')) {
 				var game = Games.findOne();
 				if (game) {
-					if (!game.events)
-						game.events = [];
 					Session.set('game', game);
 				}
 			}
 		});
 		Session.setDefault('locator', [{ type: 'tossups', index: 0 }]);
+	});
+
+	Handlebars.registerHelper('date', function(date) {
+		dateObj = new Date(date);
+		return $.timeago(dateObj);
 	});
 
 	Template.leaderboard.teams = function () {
@@ -59,7 +62,8 @@ if (Meteor.isClient) {
 	Template.nav.Events = function() {
 		if (!Session.get('game'))
 			return;
-		return Session.get('game').events.slice(0,2);
+		var _id = Session.get('game')._id;
+		return Events.find({ 'game_id': _id }, { sort: { datetime: -1 } }).fetch().slice(0,2);
 	};
 
 	Template.event.player = function() {
@@ -74,7 +78,7 @@ if (Meteor.isClient) {
 			case 15: return 'powered'; break;
 			default: return ndashify(this.inc) + '’d';
 		}
-	}
+	};
 	Template.event.question = function() {
 		if (!Template.reader.packet())
 			return;
@@ -83,7 +87,7 @@ if (Meteor.isClient) {
 		if (answer.indexOf(' [') !== -1)
 			return answer.substring(0, answer.indexOf(' ['));
 		return answer;
-	}
+	};
 
 	Template.question.this_question = function() {
 		if (!(Template.reader.packet()))
@@ -127,8 +131,11 @@ if (Meteor.isClient) {
 
 			var g = Session.get('game');
 			var l = Session.get('locator');
-			g.events.unshift({ player_id: this._id, inc: inc, location: l[0] });
-			Session.set('game', g);
+			var new_event = { game_id: g._id, player_id: this._id, inc: inc, location: l[0], datetime: new Date };
+			Events.insert(new_event);
+
+			// g.events.unshift(new_event);
+			//Session.set('game', g);
 		},
 		'click': function () {
 			if (Session.get('locator')[0].type !== 'tossups')

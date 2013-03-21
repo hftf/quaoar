@@ -18,6 +18,8 @@ Rounds = new Meteor.Collection("rounds");
 Locations = new Meteor.Collection("locations");
 Games = new Meteor.Collection("games");
 
+Events = new Meteor.Collection("events");
+
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
