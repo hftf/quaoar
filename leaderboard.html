@@ -32,10 +32,11 @@
       <h3>Round {{packet.round}} — Packet {{packet.filename}}</h3>
       <table class="packetbar">
       {{#each types}}
-        <tr class="{{this}}">
-          <th>{{this}}</th>
-        {{#each type_questions this packet}}
-          <td class="{{selected}}">{{index}}
+        <tr class="{{type}}" data-type="{{type}}">
+          <th>{{type}}</th>
+        {{#each type_questions type packet}}
+          <td class="{{selected}}">
+            <span class="index" data-index="{{index}}">{{index}}</span>
           {{#if list packet}}
             <ul class="question_userlist">
             {{#each list packet}}

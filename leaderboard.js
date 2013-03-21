@@ -45,11 +45,10 @@ if (Meteor.isClient) {
 	Template.reader.selected = function() {
 		var l = Session.get('locator');
 		var selected_question = Template.reader.packet()[l[0].type][l[0].index];
-		var self = Object.create(this);
-		delete self.index;
+		selected_question.index = this.index;
 		return _.isEqual(selected_question, this) ? 'selected' : '';
 	};
-	Template.reader.types = [ 'tossups', 'bonuses' ];
+	Template.reader.types = [{ type: 'tossups' }, { type: 'bonuses' }];
 	Template.reader.type_questions = function(type, packet) {
 		if (!packet)
 			return;
@@ -226,6 +225,19 @@ if (Meteor.isClient) {
 
 			// l.cur = (l.cur === 'bonuses') ? 'tossups' : 'bonuses';
 			// console.log('->',l.cur, l[l.cur]+1)
+			Session.set('locator', l);
+			Meteor.users.update({ '_id': Meteor.userId() }, { $set: { 'locator': l[0] } });
+		}
+	});
+	Template.reader.events({
+		'click .index': function(event) {
+			var trg = event.srcElement || event.target;
+			var type = trg.parentNode.parentNode.getAttribute('data-type');
+			var index = +trg.getAttribute('data-index') - 1;
+
+			var new_loc = { type: type, index: index };
+			var l = Session.get('locator');
+			l.unshift(new_loc);
 			Session.set('locator', l);
 			Meteor.users.update({ '_id': Meteor.userId() }, { $set: { 'locator': l[0] } });
 		}
