@@ -41,13 +41,13 @@
       </table>
     </div>
   </div>
-  <hr class="half-bottom" />
+  <hr />
   <div class="reader row">
     <div class="sixteen columns">
       {{> question}}
     </div>
+    <hr class="remove-bottom" />
   </div>
-  <hr class="remove-bottom" />
 </template>
 
 <template name="question">
@@ -91,7 +91,7 @@
     </h3>
     <hr class="half-bottom" />
     <h4>Latest events</h4>
-    <ul>
+    <ul class="events">
     {{#each Events}}
       {{> event}}
     {{/each}}
@@ -100,7 +100,7 @@
 </template>
 
 <template name="event">
-  <li><small>{{player}} {{pointed}} <span class="text">{{{question}}}</span> {{date datetime}}</small></li>
+  <li><small><time class="timeago">{{time datetime}}</time> {{player}} {{pointed}} <span class="text">{{{question}}}</span></small></li>
 </template>
 
 <template name="team">

@@ -18,9 +18,10 @@ if (Meteor.isClient) {
 		Session.setDefault('locator', [{ type: 'tossups', index: 0 }]);
 	});
 
-	Handlebars.registerHelper('date', function(date) {
-		dateObj = new Date(date);
-		return $.timeago(dateObj);
+	Handlebars.registerHelper('time', function(datetime) {
+		var dateObj = new Date(datetime);
+		//return $.timeago(dateObj);
+		return dateObj.toTimeString().substring(0,5);
 	});
 
 	Template.leaderboard.teams = function () {
