@@ -1,5 +1,5 @@
 // http://collegiate.quizbowlpackets.com/archive/2011ACFFall.zip;Final Packets/St. Anselm's and Alberta.doc
-var sets = [
+this.sets = [
 	{ name: "ACF Fall 2011", packets: [
 		{
 			round: 9,
